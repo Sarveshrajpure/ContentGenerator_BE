@@ -15,8 +15,16 @@ app.use(express.json());
 app.use(xss());
 app.use(mongoSanitize());
 
-///CORS
-app.use(cors());
+// CORS
+const corsOrigin = process.env.CORS_ORIGIN;
+app.use(
+  cors({
+    origin: corsOrigin || "http://localhost:3000",
+    methods: ["POST", "GET", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Authorization", "Content-Type"],
+    credentials: true,
+  })
+);
 
 //mongodb
 const mongoUri = `mongodb+srv://${process.env.DB_ADMIN}:${process.env.DB_PASS}@${process.env.DB_HOST}?retryWrites=true&w=majority`;
